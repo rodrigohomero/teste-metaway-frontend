@@ -1,0 +1,180 @@
+/* Container principal */
+.grid-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: auto; /* Ocupa a altura total da janela */
+  background: linear-gradient(to bottom, #f4f6f9, #e9ecef); /* Fundo suave */
+}
+
+/* Imagem de destaque */
+.image-container img {
+  width: 100%;
+  max-width: 700px;
+  height: auto;
+  border-radius: 10px; /* Bordas arredondadas para um toque elegante */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Sombra sutil */
+  animation: fadeIn 0.6s ease-in-out; /* Animação de entrada */
+  flex-shrink: 1; /* Permite que a imagem diminua quando necessário */
+}
+
+/* Card de login */
+.conteudo-login {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 500px;
+  padding: 20px;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  animation: fadeIn 0.6s ease-in-out;
+  flex-shrink: 1; /* Permite que a imagem diminua quando necessário */
+
+}
+
+/* Títulos */
+.mat-card-title {
+  font-size: 1.8rem;
+  color: #3dc200; /* Verde principal */
+  font-weight: bold;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.mat-card-subtitle {
+  font-size: 1.2rem;
+  color: #6c757d; /* Cinza secundário */
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* Campos do formulário */
+mat-form-field {
+  width: 100%;
+  margin-bottom: 5px;
+}
+
+.full-width {
+  margin: 10px 0;
+  width: 100%;
+}
+
+/* Botões */
+button {
+  width: 100%;
+  padding: 12px;
+  font-size: 1rem;
+  border-radius: 5px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+button[color="primary"] {
+  background: linear-gradient(to right, #43a047, #005f05); /* Gradiente */
+  color: white;
+  box-shadow: 0 4px 8px rgba(67, 160, 71, 0.3);
+}
+
+button[color="primary"]:nth-child(2) {
+  background: #f4f4f4;
+  color: #3dc200;
+  border: 1px solid #3dc200;
+}
+
+/* Links */
+a {
+  color: #3dc200;
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+a:hover {
+  text-decoration: underline;
+  color: #2e7d32;
+}
+
+/* Google Button */
+.google-button-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin-top: 15px;
+}
+
+#googleButton {
+  width: auto;
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+#googleButton:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Toolbar */
+.mat-toolbar {
+  background: linear-gradient(to right, white 13%, #3dc200 100%);
+  color: rgb(12, 71, 0);
+  font-size: 1.2rem;
+  padding: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.titulo-toolbar {
+  font-size: 1.2rem;
+  margin-left: 30px;
+  color: rgb(12, 71, 0);
+  text-shadow: 1px 1px rgba(0, 0, 0, 0.2);
+}
+
+/* Responsividade */
+@media (max-width: 600px) {
+  .grid-container {
+    flex-direction: column;
+    padding: 10px;
+  }
+
+  .image-container {
+    display: none; /* Oculta a imagem em telas pequenas */
+  }
+
+  .titulo-toolbar {
+    font-size: 1rem;
+    margin-left: 8px;
+  }
+
+  .conteudo-login {
+    width: 100%;
+    padding: 15px;
+  }
+
+  mat-card-title {
+    font-size: 1.5rem;
+  }
+
+  button {
+    font-size: 0.9rem;
+  }
+}
+
+/* Animação de Entrada */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

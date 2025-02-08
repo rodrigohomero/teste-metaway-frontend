@@ -1,0 +1,42 @@
+<mat-toolbar fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="8px">
+    <img src="assets\img\logo-doame-verde.png" class="logo-img" alt="Logo ">
+    <h1 fxFlex class="titulo-toolbar"></h1>
+
+</mat-toolbar>
+
+<div fxLayout="row" fxLayout.lt-md="column" fxLayoutAlign="space-around center" class="grid-container">
+    <div fxFlex="50" fxFlex.lt-md="100" class="image-container">
+        <img src="assets\img\imagem-login.webp" alt="Imagem Descritiva">
+    </div>
+
+    <mat-card fxFlex="50" fxFlex.lt-md="100" class="conteudo-login">
+
+        <mat-card-title>
+            <h3>Login</h3>
+        </mat-card-title>
+
+        <mat-card-content class="card-login">
+            <form [formGroup]="form" (ngSubmit)="onSubmit()">
+                <mat-form-field class="full-width">
+                    <mat-label>CPF</mat-label>
+                    <input formControlName="cpf" matInput placeholder="CPF" type="text" required />
+                </mat-form-field>
+
+                <mat-form-field class="full-width">
+                    <mat-label>Senha</mat-label>
+                    <input formControlName="senha" matInput placeholder="Senha" type="password" required />
+                </mat-form-field>
+
+                <button style="width: 100%; color: white; margin-bottom: 10px;" color="primary" mat-raised-button
+                    #botaologin> Entrar </button>
+
+            </form>
+        </mat-card-content>
+    </mat-card>
+
+
+</div>
+
+<div class="rodape">
+
+</div>

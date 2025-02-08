@@ -1,0 +1,60 @@
+.grid-container {
+    margin: 20px;
+  }
+  
+  mat-card {
+    max-width: 100%;
+    margin: 10px;
+    text-align: center;
+  }
+  
+  .full-width{
+    width: 100%;
+  }
+  
+  .min-width {
+    width: 100%;
+    min-width: 150px;
+  }
+  
+  .btn-space {
+    margin-left: 5px;
+  }
+  
+  .actions-center {
+    justify-content: center;
+  }
+  
+  .form-array-error {
+    text-align: left;
+  }
+  
+  .input-mesma-linha{ 
+    margin-left: 5px;
+  }
+  
+  mat-divider{
+
+    margin-bottom: 20px;
+    margin-top: 20px;
+  }
+  
+  .spiner{
+    display: flex; 
+    justify-content: center; 
+    align-items: center;
+  }
+
+  @media screen and (max-width: 600px) {
+
+    mat-card{
+      width: 100%;
+    }
+
+    .grid-container {
+      flex-direction: column;
+      width: 100%;
+      margin: 0px;
+    }
+
+  }

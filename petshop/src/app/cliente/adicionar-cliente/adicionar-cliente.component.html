@@ -1,0 +1,157 @@
+<div class="grid-container">
+
+
+    <h1 class="titulo-card">Cadastrar Cliente</h1>
+
+
+    <mat-divider class="divider"></mat-divider>
+
+
+    <div *ngIf="isLoading; else formTemplate">
+        <div class="spinner-container">
+            <mat-progress-spinner [diameter]="50" mode="indeterminate"></mat-progress-spinner>
+            <p>{{ loadingMessage }}</p>
+        </div>
+    </div>
+
+    <!-- Condicional para exibir o spinner ou o formulário -->
+    <ng-template #formTemplate>
+
+        <form class="full-widith" [formGroup]="formCliente">
+
+            <h2>Dados Pessoais</h2>
+
+            <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="10px" fxLayoutGap.xs="10px">
+
+                <mat-form-field fxFlex>
+                    <mat-label>Nome</mat-label>
+                    <input matInput formControlName="nome" name="nome" #nome>
+                </mat-form-field>
+
+                <mat-form-field fxFlex>
+                    <mat-label>CPF</mat-label>
+                    <input matInput formControlName="cpf" name="cpf" #cpf pattern="[0-9]*"
+                        (keypress)="somenteNumeros($event)" mask="000.000.000-00">
+                </mat-form-field>
+
+            </div>
+
+
+            <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="10px" fxLayoutGap.xs="10px">
+
+                <div formGroupName="contato">
+
+                    <mat-form-field fxFlex>
+                        <mat-label>Tag</mat-label>
+                        <input matInput formControlName="tag" name="tag" #tag>
+                    </mat-form-field>
+
+                    <mat-form-field fxFlex>
+                        <mat-label>Tipo de Contato</mat-label>
+                        <mat-select formControlName="tipo" name="tipo" #tipo>
+                            @for (tp of tiposContato; track tp) {
+                            <mat-option [value]="tp">{{tp}}</mat-option>
+                            }
+                        </mat-select>
+                    </mat-form-field>
+
+                    <mat-form-field fxFlex>
+                        <mat-label>Valor</mat-label>
+                        <input matInput formControlName="valor" name="valor" #valor>
+                    </mat-form-field>
+
+                </div>
+
+
+            </div>
+
+
+            <h2>Credenciais</h2>
+
+            <div formGroupName="usuario">
+
+
+                <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="10px" fxLayoutGap.xs="10px">
+
+                    <mat-form-field fxFlex>
+                        <mat-label>Senha</mat-label>
+                        <input matInput type="password" formControlName="senha" name="senha" #senha>
+                    </mat-form-field>
+
+                    <mat-form-field fxFlex>
+                        <mat-label>Confirme sua Senha</mat-label>
+                        <input matInput type="password" formControlName="confirmaSenha" name="confirmaSenha"
+                            #confirmaSenha required>
+                    </mat-form-field>
+
+                    @if(this.formCliente.get('usuario.senha')?.touched &&
+                    this.formCliente.get('usuario.senha')?.value !==
+                    this.formCliente.get('usuario.confirmaSenha')?.value){
+
+                    <div>
+                        <span style="color: red;">Senhas não conferem</span>
+                    </div>
+                    }
+
+                </div>
+
+            </div>
+
+
+            <div formGroupName="endereco">
+
+
+                <h2> Endereço </h2>
+
+                <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="10px" fxLayoutGap.xs="10px">
+
+                    <mat-form-field fxFlex>
+                        <mat-label>Logradouro</mat-label>
+                        <input matInput formControlName="logradouro" name="logradouro" #logradouro>
+                    </mat-form-field>
+
+                    <mat-form-field fxFlex>
+                        <mat-label>Cidade</mat-label>
+                        <input matInput formControlName="cidade" name="cidade" #cidade>
+                    </mat-form-field>
+
+                </div>
+
+                <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="10px" fxLayoutGap.xs="10px">
+
+                    <mat-form-field fxFlex>
+                        <mat-label>Bairro</mat-label>
+                        <input matInput formControlName="bairro" name="bairro" #bairro>
+                    </mat-form-field>
+
+                    <mat-form-field fxFlex>
+                        <mat-label>Complemento</mat-label>
+                        <input color="" matInput formControlName="complemento" name="complemento" #complemento>
+                    </mat-form-field>
+
+                    <mat-form-field fxFlex>
+                        <mat-label>Tag</mat-label>
+                        <input matInput formControlName="tag" name="tag" #tag>
+                    </mat-form-field>
+
+
+                </div>
+
+
+            </div>
+
+
+            <button mat-raised-button
+                [disabled]="!formCliente.valid || formCliente.get('usuario.senha')?.value != formCliente.get('usuario.confirmaSenha')?.value"
+                color="primary" (click)="onSubmit()">
+                Salvar
+            </button>
+            <button mat-raised-button (click)="voltar()" class="btn-space">
+                Cancelar
+            </button>
+
+        </form>
+
+    </ng-template>
+
+</div>

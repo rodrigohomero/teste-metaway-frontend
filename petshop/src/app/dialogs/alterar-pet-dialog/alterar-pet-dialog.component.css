@@ -1,0 +1,50 @@
+:host {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 450px;
+  }
+  
+  h2 {
+    text-align: center;
+    font-size: 22px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 15px;
+  }
+  
+  mat-dialog-content {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    padding: 20px;
+  }
+  
+  .full-width {
+    width: 100%;
+  }
+  
+  mat-form-field {
+    width: 100%;
+    background: #fff;
+    border-radius: 8px;
+  }
+  
+  mat-dialog-actions {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+  }
+  
+  button {
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+  
+  .mat-dialog-container {
+    border-radius: 12px;
+    padding: 24px;
+    background: #f8f9fa;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.15);
+  }
+  

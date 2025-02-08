@@ -1,0 +1,111 @@
+.grid-container {
+  margin: 10px;
+  width: 100%;
+}
+
+mat-card {
+  max-width: 80%;
+  margin: 2em auto;
+  text-align: center;
+}
+
+.full-width{
+  width: 100%;
+}
+
+.min-width {
+  width: 100%;
+  min-width: 150px;
+}
+
+.btn-space {
+  margin-left: 5px;
+}
+
+.actions-center {
+  justify-content: center;
+}
+
+.form-array-error {
+  text-align: left;
+}
+
+.input-mesma-linha{ 
+  margin-left: 5px;
+}
+
+.divider{
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
+
+.spiner{
+  display: flex; 
+  justify-content: center; 
+  align-items: center;
+}
+
+mat-toolbar {
+  background: linear-gradient(to right, white 13%, #3dc200 100%);
+}
+
+.titulo-toolbar{
+  font-size: 100%;
+  margin-left: 40px;
+  color: #005200;
+
+}
+
+@media screen and (max-width: 600px) {
+
+  .grid-container {
+    width: 100%;
+    height: 100%;
+  }
+
+  mat-form-field {
+    width: 100%;
+  }
+
+  mat-card {
+    max-width: 100%;
+    margin: 2em auto;
+    text-align: center;
+  }
+
+  .titulo-toolbar {
+    margin-left: 8px;
+    font-size: 13px;
+  }
+
+  .spinner-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background-color: rgba(255, 255, 255, 0.8); /* Fundo translúcido */
+    z-index: 1000;
+  }
+  
+  .spinner-container p {
+    margin-top: 15px;
+    font-size: 1.2em;
+    color: #005200; /* Cor do texto de carregamento */
+  }
+
+  .mat-toolbar {
+
+    width: 100%;
+    /* Definir um gradiente como plano de fundo */
+    background: linear-gradient(to right, white 39%, #3a96d6 100%);
+    /* A cor primária deve ser definida em seu arquivo de tema */
+  }
+
+
+
+}

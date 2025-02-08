@@ -1,0 +1,48 @@
+.sidenav-container {
+    height: 100%;
+  }
+  
+  .sidenav {
+    width: 210px;
+    background: 
+      linear-gradient(
+        rgba(255, 255, 255, 1.0), 
+        rgba(255, 255, 255, 0.8)
+      ),
+      url('/assets/img/vector-JUL-2021-72.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+  
+  .sidenav .mat-toolbar {
+    background: inherit;
+  }
+  
+  .mat-toolbar.mat-primary {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+  }
+  
+  .clicado:visited{
+    background-color: darkgrey;
+  }
+  
+  .logo-img {
+    height: 40px;
+}
+  
+  .toolbar-principal{
+    background: linear-gradient(to right, rgb(255, 255, 255) 0%, #3dc200 60%);
+  }
+
+  .titulo-toolbar{
+    font-size: 100%;
+    margin-left: 40px;
+    color: #005200;
+  
+  }
+
+  .icone-menu{
+    color: #005200;
+  }

@@ -1,0 +1,55 @@
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav #drawer class="sidenav" fixedInViewport [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+    [mode]="(isHandset$ | async) ? 'over' : 'side'" [opened]="(isHandset$ | async) === false">
+    <mat-toolbar>
+
+      <img src="assets\img\logo-doame-verde.png" class="logo-img" alt="Logo ">
+
+    </mat-toolbar>
+    <mat-divider></mat-divider>
+
+    <b>
+      <p style="margin: 10px;">Olá, {{this.primeiroNome}}</p>
+    </b>
+
+    <mat-divider></mat-divider>
+    <mat-nav-list>
+      <a mat-list-item (click)="navigateTo('area-assinante/home/assinantes/dashboard', drawer)">
+        <mat-icon class="icone-menu" aria-hidden="false" aria-label="Dashboard" fontIcon="home"></mat-icon>
+        Dashboard</a>
+      <a mat-list-item (click)="navigateTo('area-assinante/home/assinantes/meusplanos', drawer)">
+        <mat-icon class="icone-menu" aria-hidden="false" aria-label="Minhas Assinaturas" fontIcon="apps"></mat-icon>
+        Minhas Assinaturas</a>
+
+      <a mat-list-item (click)="navigateTo('area-assinante/home/assinantes/alterar-assinante', drawer)">
+        <mat-icon class="icone-menu" aria-hidden="false" aria-label="Minha Conta" fontIcon="account_circle"></mat-icon>
+        Minha Conta</a>
+
+      <a mat-list-item (click)="navigateTo('area-assinante/home/assinantes/dados-de-pagamento', drawer)">
+        <mat-icon class="icone-menu" aria-hidden="false" aria-label="Dados de Pagamento"
+          fontIcon="credit_card"></mat-icon>
+        Dados de Pagamento</a>
+
+      <a mat-list-item (click)="navigateTo('area-assinante/home/assinantes/formulario-suporte-assinante', drawer)">
+        <mat-icon class="icone-menu" aria-hidden="false" aria-label="Meus planos" fontIcon="support_agent"></mat-icon>
+        Suporte</a>
+
+      <a mat-list-item (click)="logout()">
+        <mat-icon aria-hidden="false" aria-label="Sair" fontIcon="logout"></mat-icon>
+        Sair</a>
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <mat-toolbar class="toolbar-principal" color="primary">
+      @if (isHandset$ | async) {
+      <button aria-label="Toggle sidenav" mat-icon-button color="white" (click)="drawer.toggle()">
+        <mat-icon>menu</mat-icon>
+      </button>
+      }
+
+      <span class="titulo-toolbar">Área de Membros</span>
+
+    </mat-toolbar>
+    <ng-content></ng-content>
+  </mat-sidenav-content>
+</mat-sidenav-container>
