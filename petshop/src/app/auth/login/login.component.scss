@@ -5,6 +5,7 @@
   align-items: center;
   height: auto; /* Ocupa a altura total da janela */
   background: linear-gradient(to bottom, #f4f6f9, #e9ecef); /* Fundo suave */
+  padding: 20px;
 }
 
 /* Imagem de destaque */
@@ -76,55 +77,17 @@ button:hover {
 }
 
 button[color="primary"] {
-  background: linear-gradient(to right, #43a047, #005f05); /* Gradiente */
+  background: linear-gradient(to right, #910000, #000000); /* Gradiente */
   color: white;
   box-shadow: 0 4px 8px rgba(67, 160, 71, 0.3);
 }
 
-button[color="primary"]:nth-child(2) {
-  background: #f4f4f4;
-  color: #3dc200;
-  border: 1px solid #3dc200;
-}
 
-/* Links */
-a {
-  color: #3dc200;
-  text-decoration: none;
-  font-size: 0.9rem;
-}
 
-a:hover {
-  text-decoration: underline;
-  color: #2e7d32;
-}
-
-/* Google Button */
-.google-button-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  margin-top: 15px;
-}
-
-#googleButton {
-  width: auto;
-  padding: 10px;
-  border-radius: 5px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-#googleButton:hover {
-  transform: scale(1.05);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-}
 
 /* Toolbar */
 .mat-toolbar {
-  background: linear-gradient(to right, white 13%, #3dc200 100%);
-  color: rgb(12, 71, 0);
+  background: linear-gradient(to right, rgb(0, 0, 0) 13%, #7e0000 100%);
   font-size: 1.2rem;
   padding: 10px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
@@ -133,7 +96,7 @@ a:hover {
 .titulo-toolbar {
   font-size: 1.2rem;
   margin-left: 30px;
-  color: rgb(12, 71, 0);
+  color: rgb(255, 255, 255);
   text-shadow: 1px 1px rgba(0, 0, 0, 0.2);
 }
 

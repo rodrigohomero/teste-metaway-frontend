@@ -1,0 +1,35 @@
+<h2 mat-dialog-title>Digite o Nome da Raça</h2>
+
+<mat-dialog-content class="mat-typography">
+
+
+
+    <form [formGroup]="form">
+
+
+        <mat-divider style="margin: 10px;"></mat-divider>
+
+        <mat-form-field fxFlex="60">
+            <mat-label>Nome da Raça</mat-label>
+            <input matInput formControlName="descricao" formControlName="descricao" name="descricao" #descricao>
+        </mat-form-field>
+
+        @if(isLoading == true){
+
+            <div class="spiner">
+                <mat-progress-spinner [diameter]="50" mode="indeterminate"></mat-progress-spinner>
+            </div>
+        }
+
+
+
+    </form>
+
+</mat-dialog-content>
+
+<mat-dialog-actions>
+
+    <button mat-raised-button (click)="onSalvar()">Salvar</button>
+    <button mat-raised-button (click)="onCancel()">Cancelar</button>
+
+</mat-dialog-actions>

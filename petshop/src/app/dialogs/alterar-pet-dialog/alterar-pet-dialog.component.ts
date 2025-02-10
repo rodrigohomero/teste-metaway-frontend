@@ -6,10 +6,15 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
-import { Cliente } from '../../model/cliente.model';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatOptionModule } from '@angular/material/core';
-import { Pet } from '../../model/pet.model';
+import { Pet, Raca } from '../../model/pet.model';
+import { RacaService } from '../../service/raca.service';
+import { AdicionarPetDialogComponent } from '../adicionar-pet-dialog/adicionar-pet-dialog.component';
+import { PetService } from '../../service/pet.service';
+import { ActivatedRoute } from '@angular/router';
+import { UsuarioService } from '../../service/usuario.service';
+import { MatSelectModule } from '@angular/material/select';
 
 
 @Component({
@@ -24,51 +29,81 @@ import { Pet } from '../../model/pet.model';
     CommonModule,
     MatIconModule,
     MatDatepickerModule,
-    MatOptionModule
+    MatOptionModule,
+    MatSelectModule
   ],
   templateUrl: './alterar-pet-dialog.component.html',
   styleUrl: './alterar-pet-dialog.component.css'
 })
-export class ALterarPetDialogComponent implements OnInit{
+export class ALterarPetDialogComponent implements OnInit {
 
-  petForm: FormGroup;
+  petForm!: FormGroup;
 
   pet: Pet = new Pet
 
   // Aqui podemos emular a lista de raçar que viriam do banco de dados.
-  racas = [
-    'Labrador', 'Husk Siberiano', 'SRD', 'Golden Retriever', 'Pit Bull', 'Maltês', 'Doberman', 'Rotwailler', 'Dog Alemão', 'Pastor Alemão', 'Pintcher',
-  ];
+  racas: Raca[] = [];
 
 
   ngOnInit(): void {
-  
-  
+
+    this.racaService.getRacas().subscribe(
+      response => {
+        this.racas = response
+      }
+    )
+
+
+    this.petForm = this.fb.group({
+
+      nome: ['', [Validators.required]],
+
+      dataNascimento: ['', [Validators.required]],
+
+      raca: [null, [Validators.required]]
+
+    });
+
+
+    this.pesquisarPet(this.data.petId);
+
+
+
+
   }
+
+
 
   constructor(
 
-    public dialogRef: MatDialogRef<ALterarPetDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { pet: Pet},
-    private fb: FormBuilder
+    public dialogRef: MatDialogRef<AdicionarPetDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: { petId: number },
+    private fb: FormBuilder,
+    private racaService: RacaService,
+    private petService: PetService
   ) {
-    this.petForm = this.fb.group({
-      nome: ['', [Validators.required, Validators.email]],
-      dataNascimento: [null, [Validators.required, Validators.min(1), Validators.max(100)]],
 
-      raca: this.fb.group({
-        descricao: [null, [Validators.required, Validators.min(1)]]
-      })
-    });
+
   }
 
   alterarPet() {
 
-    this.pet = this.petForm.getRawValue() as Pet
-    this.dialogRef.close(this.pet);
-      
+    let formValue = this.petForm.getRawValue() as Pet
+    formValue.id = this.pet.id
+    formValue.cliente = this.pet.cliente
+
+    this.petService.updatePet(this.pet.id!, formValue).subscribe(
+
+      response => {
+        this.pet = response
+        this.dialogRef.close(this.pet);
+      }
+    )
+
+
+
   }
-  
+
 
   onCancel() {
     this.dialogRef.close();
@@ -109,5 +144,28 @@ export class ALterarPetDialogComponent implements OnInit{
     }
   }
 
+
+  pesquisarPet(idPet: number) {
+
+
+
+    this.petService.getPetById(idPet).subscribe(
+
+      dados => {
+
+        this.pet = dados;
+
+        console.log(this.pet)
+
+        this.petForm.patchValue({
+
+          nome: this.pet.nome,
+          dataNascimento: this.pet.dataNascimento,
+          raca: this.racas.find(r => r.id === this.pet.raca.id) || null
+        });
+
+      }
+    );
+  }
 
 }

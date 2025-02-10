@@ -1,12 +1,13 @@
-<h2 mat-dialog-title>📩 Convidar Influencer</h2>
+<h2 mat-dialog-title>Alterar Pet</h2>
 
 <mat-dialog-content>
   <form [formGroup]="petForm">
+
     <!-- Nome do Pet -->
     <mat-form-field appearance="outline" class="full-width">
       <mat-label>Nome do Pet</mat-label>
       <input matInput formControlName="nome" type="nome" required>
-      <mat-error *ngIf="petForm.controls['nome'].invalid">Nome é obrigatório</mat-error>
+      <mat-error *ngIf="petForm.get('nome')?.hasError('invalidNome')">Nome é obrigatório</mat-error>
     </mat-form-field>
 
     <!-- Data de Nascimento -->
@@ -27,7 +28,7 @@
       <mat-label>Raça</mat-label>
       <mat-select formControlName="raca" name="raca" #raca>
           @for (raca of racas; track raca) {
-          <mat-option [value]="raca">{{raca}}</mat-option>
+          <mat-option [value]="raca">{{raca.descricao}}</mat-option>
           }
       </mat-select>
   </mat-form-field>
@@ -38,7 +39,7 @@
 
 <mat-dialog-actions align="end">
   <button mat-button (click)="onCancel()">❌ Cancelar</button>
-  <button mat-flat-button color="primary" (click)="adicionarPet()" [disabled]="petForm.invalid">
-    📤 Enviar Proposta
+  <button mat-flat-button color="primary" (click)="alterarPet()" [disabled]="petForm.invalid">
+    📤 Salvar
   </button>
 </mat-dialog-actions>

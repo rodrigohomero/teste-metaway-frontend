@@ -8,8 +8,7 @@
       linear-gradient(
         rgba(255, 255, 255, 1.0), 
         rgba(255, 255, 255, 0.8)
-      ),
-      url('/assets/img/vector-JUL-2021-72.jpg');
+      );
     background-repeat: no-repeat;
     background-size: cover;
   }
@@ -32,17 +31,21 @@
     height: 40px;
 }
   
-  .toolbar-principal{
-    background: linear-gradient(to right, rgb(255, 255, 255) 0%, #3dc200 60%);
-  }
+  /* Toolbar */
+.mat-toolbar {
+  background: linear-gradient(to right, rgb(0, 0, 0) 13%, #7e0000 100%);
+  font-size: 1.2rem;
+  padding: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
 
   .titulo-toolbar{
     font-size: 100%;
     margin-left: 40px;
-    color: #005200;
+    color: #ffffff;
   
   }
 
   .icone-menu{
-    color: #005200;
+    color: #7e0000;
   }

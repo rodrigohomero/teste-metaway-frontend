@@ -9,7 +9,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { Cliente } from '../../model/cliente.model';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatOptionModule } from '@angular/material/core';
-import { Pet } from '../../model/pet.model';
+import { Pet, Raca } from '../../model/pet.model';
+import { MatSelectModule } from '@angular/material/select';
+import { RacaService } from '../../service/raca.service';
 
 
 @Component({
@@ -24,24 +26,39 @@ import { Pet } from '../../model/pet.model';
     CommonModule,
     MatIconModule,
     MatDatepickerModule,
-    MatOptionModule
+    MatOptionModule,
+    MatSelectModule
   ],
   templateUrl: './adicionar-pet-dialog.component.html',
   styleUrl: './adicionar-pet-dialog.component.css'
 })
 export class AdicionarPetDialogComponent implements OnInit{
 
-  petForm: FormGroup;
+  petForm!: FormGroup;
 
   pet: Pet = new Pet
 
   // Aqui podemos emular a lista de raçar que viriam do banco de dados.
-  racas = [
-    'Labrador', 'Husk Siberiano', 'SRD', 'Golden Retriever', 'Pit Bull', 'Maltês', 'Doberman', 'Rotwailler', 'Dog Alemão', 'Pastor Alemão', 'Pintcher',
-  ];
+  racas: Raca[] = [];
 
 
   ngOnInit(): void {
+
+
+    this.racaService.getRacas().subscribe(
+      response=>{
+        this.racas = response
+      }
+    )
+
+    this.petForm = this.fb.group({
+      nome: ['', [Validators.required]],
+
+      dataNascimento: ['', [Validators.required]],
+
+      raca: ['', [Validators.required]]
+ 
+    });
   
   
   }
@@ -52,16 +69,11 @@ export class AdicionarPetDialogComponent implements OnInit{
 
     public dialogRef: MatDialogRef<AdicionarPetDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: { cliente: Cliente},
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private racaService: RacaService
   ) {
-    this.petForm = this.fb.group({
-      nome: ['', [Validators.required, Validators.email]],
-      dataNascimento: [null, [Validators.required, Validators.min(1), Validators.max(100)]],
 
-      raca: this.fb.group({
-        descricao: [null, [Validators.required, Validators.min(1)]]
-      })
-    });
+    
   }
 
   adicionarPet() {

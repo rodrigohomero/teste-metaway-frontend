@@ -1,4 +1,4 @@
-<h2 mat-dialog-title>📩 Convidar Influencer</h2>
+<h2 mat-dialog-title>Adicionar Pet</h2>
 
 <mat-dialog-content>
   <form [formGroup]="petForm">
@@ -12,25 +12,24 @@
     <!-- Data de Nascimento -->
     <mat-form-field>
       <mat-label>Data de Nascimento</mat-label>
-      <input matInput [matDatepicker]="picker" formControlName="dataNascimento"
-          placeholder="dd/MM/yyyy" (blur)="onDateBlur()" />
+      <input matInput [matDatepicker]="picker" formControlName="dataNascimento" placeholder="dd/MM/yyyy"
+        (blur)="onDateBlur()" />
       <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
       <mat-datepicker #picker></mat-datepicker>
-      <mat-error
-          *ngIf="petForm.get('dataNascimento')?.hasError('invalidDate')">
-          Data inválida. Insira no formato dd/MM/yyyy.
+      <mat-error *ngIf="petForm.get('dataNascimento')?.hasError('invalidDate')">
+        Data inválida. Insira no formato dd/MM/yyyy.
       </mat-error>
-  </mat-form-field>
+    </mat-form-field>
 
     <!-- Raça-->
     <mat-form-field fxFlex>
       <mat-label>Raça</mat-label>
       <mat-select formControlName="raca" name="raca" #raca>
-          @for (raca of racas; track raca) {
-          <mat-option [value]="raca">{{raca}}</mat-option>
-          }
+        @for (raca of racas; track raca) {
+        <mat-option [value]="raca">{{raca.descricao}}</mat-option>
+        }
       </mat-select>
-  </mat-form-field>
+    </mat-form-field>
 
 
   </form>
@@ -39,6 +38,6 @@
 <mat-dialog-actions align="end">
   <button mat-button (click)="onCancel()">❌ Cancelar</button>
   <button mat-flat-button color="primary" (click)="adicionarPet()" [disabled]="petForm.invalid">
-    📤 Enviar Proposta
+    📤 Salvar
   </button>
 </mat-dialog-actions>

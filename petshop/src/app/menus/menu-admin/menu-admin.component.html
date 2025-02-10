@@ -2,16 +2,26 @@
   <mat-sidenav #drawer class="sidenav" fixedInViewport [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
     [mode]="(isHandset$ | async) ? 'over' : 'side'" [opened]="(isHandset$ | async) === false">
     <mat-toolbar>
-    
+
+      <img src="assets\logo-metaway.png" class="logo-img" alt="Logo ">
 
     </mat-toolbar>
     <mat-divider></mat-divider>
-    <p style="margin: 10px;"></p>
+    <p style="margin: 10px;">Olá Administrador!</p>
     <mat-divider></mat-divider>
     <mat-nav-list>
+
+      <a mat-list-item (click)="navigateTo('admin/home/atendimentos')">
+        <mat-icon class="icone-menu" aria-hidden="false" aria-label="Atendimentos" fontIcon="help"></mat-icon>
+        Atendimentos</a>
+
       <a mat-list-item (click)="navigateTo('admin/home/clientes')">
-        <mat-icon class="icone-menu" aria-hidden="false" aria-label="Dashboard" fontIcon="home"></mat-icon>
+        <mat-icon class="icone-menu" aria-hidden="false" aria-label="Dashboard" fontIcon="person"></mat-icon>
         Clientes</a>
+
+      <a mat-list-item (click)="navigateTo('admin/home/gerenciar-racas')">
+        <mat-icon class="icone-menu" aria-hidden="false" aria-label="Dashboard" fontIcon="add"></mat-icon>
+        Raças</a>
 
       <a mat-list-item (click)="logout()">
         <mat-icon aria-hidden="false" aria-label="Sair" fontIcon="logout"></mat-icon>
@@ -26,7 +36,7 @@
       </button>
       }
 
-
+      Área Admin
     </mat-toolbar>
     <ng-content></ng-content>
   </mat-sidenav-content>

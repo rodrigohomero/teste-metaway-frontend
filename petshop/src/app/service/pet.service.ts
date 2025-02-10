@@ -19,6 +19,10 @@ export class PetService {
     return this.http.get<Pet>(`${this.apiUrl}/${id}`);
   }
 
+  getPetByIdCliente(id: number): Observable<Pet[]> {
+    return this.http.get<Pet[]>(`${this.apiUrl}/cliente/${id}`);
+  }
+
   addPet(pet: Pet): Observable<Pet> {
     return this.http.post<Pet>(this.apiUrl, pet);
   }

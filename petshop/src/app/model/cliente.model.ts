@@ -9,7 +9,7 @@ export class Cliente {
     endereco: Endereco = new Endereco;
     contato: Contato = new Contato;
     usuario: Usuario = new Usuario;
-    pets: Pet [] = []
+    pets: Pet[] = []
   }
 
 

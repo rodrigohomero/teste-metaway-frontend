@@ -17,6 +17,9 @@ import { ValidateCpf } from '../../validators/validators';
 import { CommonModule, Location } from '@angular/common';
 import { AdicionarPetDialogComponent } from '../../dialogs/adicionar-pet-dialog/adicionar-pet-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
+import { Pet } from '../../model/pet.model';
+import { PetService } from '../../service/pet.service';
+import { UsuarioService } from '../../service/usuario.service';
 
 @Component({
   selector: 'app-alterar-cliente',
@@ -47,7 +50,9 @@ export class AlterarClienteComponent implements OnInit {
     private route: ActivatedRoute,
     private snackBar: MatSnackBar,
     private fb: FormBuilder,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private petService: PetService,
+    private usuarioService: UsuarioService
    
 
   ) {
@@ -61,29 +66,21 @@ export class AlterarClienteComponent implements OnInit {
        this.route.params.subscribe(
    
          params => {
-           const idCliente = params['idCliente'];
-           this.clienteService.getClienteById(idCliente).subscribe(
+           let idCliente = 0
 
-            dados => {
-      
-              this.cliente = dados;
-      
-              this.formCliente.patchValue({
-                contato: {
-                  tipo: this.cliente.contato.tipo,
-                  valor: this.cliente.contato.valor,
-                  tag: this.cliente.contato.tag
-                },
-                endereco: {
-                  logradouro: this.cliente.endereco.logradouro,
-                  cidade: this.cliente.endereco.cidade,
-                  bairro: this.cliente.endereco.bairro,
-                  complemento: this.cliente.endereco.complemento,
-                  tag: this.cliente.endereco.tag
-                }
-              });
-            }
-          );
+           if(params['idCliente'] && this.usuarioService.adminLogado){
+
+            idCliente = params['idCliente'];
+
+           } else{
+
+            idCliente = parseInt(JSON.parse(localStorage.getItem('idCliente') || ''))
+
+           }
+
+           this.pesquisarCliente(idCliente);
+
+           
          }
        );
 
@@ -101,6 +98,8 @@ export class AlterarClienteComponent implements OnInit {
 
   cliente: Cliente = new Cliente
 
+  pets: Pet[] = []
+
   formCliente!: FormGroup;
 
 
@@ -112,6 +111,8 @@ export class AlterarClienteComponent implements OnInit {
     let dadoscliente: Cliente = this.formCliente.getRawValue() as Cliente;
 
     dadoscliente = this.setarValores(dadoscliente);
+
+    console.log(dadoscliente)
 
     this.clienteService.updateCliente(this.cliente.id!, dadoscliente ).subscribe(
 
@@ -137,7 +138,7 @@ export class AlterarClienteComponent implements OnInit {
     this.formCliente = this.fb.group({
 
       nome: [this.cliente.nome,
-      [Validators.required, Validators.minLength(10)]],
+      [Validators.required, Validators.maxLength(50)]],
 
       cpf: [this.cliente.cpf,
       [Validators.required, Validators.minLength(11), Validators.maxLength(11), ValidateCpf]],
@@ -145,23 +146,14 @@ export class AlterarClienteComponent implements OnInit {
       contato: this.fb.group({
 
         tag: [this.cliente.contato.tag,
-          [Validators.required, Validators.maxLength(2)]],
+          [Validators.required]],
 
         tipo: [this.cliente.contato.tipo,
-        [Validators.required, Validators.maxLength(2)]],
+        [Validators.required]],
 
         valor: [this.cliente.contato.valor,
         [Validators.required]],
 
-      }),
-
-      usuario: this.fb.group({
-
-        senha: ['',
-          [Validators.required]],
-
-        confirmaSenha: ['',
-          [Validators.required]]
       }),
 
       endereco: this.fb.group({
@@ -191,8 +183,8 @@ export class AlterarClienteComponent implements OnInit {
 
     clienteUpdate.id = this.cliente.id;
     clienteUpdate.dataCadastro = this.cliente.dataCadastro
-    clienteUpdate.usuario = this.cliente.usuario
-
+    clienteUpdate.contato.id = this.cliente.contato.id
+    clienteUpdate.endereco.id = this.cliente.endereco.id
 
     return clienteUpdate;
   }
@@ -213,18 +205,43 @@ export class AlterarClienteComponent implements OnInit {
 
   }
 
-  adicionarPet(){
-  
-    // Abre a modal e passa o idInstituicao como dado
-    const dialogRef = this.dialog.open(AdicionarPetDialogComponent, {
-      width: '400px',
-    });
-  
-    // Após o fechamento do modal, recarregar as propostas pendentes
-    dialogRef.afterClosed().subscribe(
-      pet=>{
-        this.cliente.pets.push = pet
-      });
+
+  pesquisarCliente(idCliente: number){
+
+
+    this.clienteService.getClienteById(idCliente).subscribe(
+
+      dados => {
+
+        this.petService.getPetByIdCliente(idCliente).subscribe(
+          response=>{
+            this.pets = response
+          }
+        )
+        
+
+        this.cliente = dados;
+
+        this.formCliente.patchValue({
+
+          nome: this.cliente.nome,
+          cpf: this.cliente.cpf,
+
+          contato: {
+            tipo: this.cliente.contato.tipo,
+            valor: this.cliente.contato.valor,
+            tag: this.cliente.contato.tag
+          },
+          endereco: {
+            logradouro: this.cliente.endereco.logradouro,
+            cidade: this.cliente.endereco.cidade,
+            bairro: this.cliente.endereco.bairro,
+            complemento: this.cliente.endereco.complemento,
+            tag: this.cliente.endereco.tag
+          }
+        });
+      }
+    );
   }
 
 
