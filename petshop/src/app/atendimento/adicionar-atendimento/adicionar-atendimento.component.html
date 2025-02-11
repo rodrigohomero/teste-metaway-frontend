@@ -1,7 +1,7 @@
 <div class="grid-container">
 
 
-    <h1 class="titulo-card">Cadastrar Cliente</h1>
+    <h1 class="titulo-card">Cadastrar Atendimento</h1>
 
 
     <mat-divider class="divider"></mat-divider>
@@ -17,190 +17,66 @@
     <!-- Condicional para exibir o spinner ou o formulário -->
     <ng-template #formTemplate>
 
-        <form class="full-widith" [formGroup]="formCliente">
+        <div *ngIf="!this.pet">
+            <button mat-raised-button color="primary" aria-label="Adicionar um pet" (click)="adicionarPet()"
+                class="action-column-header">
+                Adicionar Pet +
+            </button>
 
-            <h2>Dados Pessoais</h2>
+        </div>
+
+        <div *ngIf="this.pet">
+
+            <h2>Dados do Pet</h2>
+
+            Nome: {{ this.pet.nome}}<br>
+            Raça:{{ this.pet.raca.descricao}}<br>
+            Data de Nascimento:{{ this.datePipe.transform(this.pet.dataNascimento, 'dd/MM/yyyy', 'America/Sao_Paulo')}}<br>
+            Tutor:{{ this.pet.cliente?.nome}}
+
+        </div>
+
+        <form class="full-widith" [formGroup]="formAtendimento">
+
+
+            <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="10px" fxLayoutGap.xs="10px">
+
+                <!-- Descrição da Loja -->
+                <mat-form-field class="full-width descricao-campo">
+                    <mat-label>Descrição do Atendimento</mat-label>
+                    <textarea maxlength="3000" matInput formControlName="descricaoAtendimento" name="descricaoAtendimento"
+                        #descricao></textarea>
+                </mat-form-field>
+
+            </div>
 
             <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="10px" fxLayoutGap.xs="10px">
 
                 <mat-form-field fxFlex>
-                    <mat-label>Nome</mat-label>
-                    <input matInput formControlName="nome" name="nome" #nome>
+                    <mat-label>Valor</mat-label>
+                    <input matInput formControlName="valor" name="valor" #valor>
                 </mat-form-field>
 
-                <mat-form-field fxFlex>
-                    <mat-label>CPF</mat-label>
-                    <input matInput formControlName="cpf" name="cpf" #cpf pattern="[0-9]*"
-                        (keypress)="somenteNumeros($event)" mask="000.000.000-00">
+                <mat-form-field>
+                    <mat-label>Data do Atendimento</mat-label>
+                    <input matInput [matDatepicker]="picker" formControlName="data" placeholder="dd/MM/yyyy"
+                        (blur)="onDateBlur()" [disabled]="true" />
+                    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                    <mat-error *ngIf="formAtendimento.get('data')?.hasError('invalidDate')">
+                        Data inválida. Insira no formato dd/MM/yyyy.
+                    </mat-error>
+                    <mat-error
+                        *ngIf="formAtendimento.get('data')?.hasError('required') && formAtendimento.get('data')?.touched">
+                        A data de atendimento.
+                    </mat-error>
                 </mat-form-field>
 
             </div>
 
 
-            <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="10px" fxLayoutGap.xs="10px">
-
-                <div formGroupName="contato">
-
-                    <mat-form-field fxFlex>
-                        <mat-label>Tag</mat-label>
-                        <input matInput formControlName="tag" name="tag" #tag>
-                    </mat-form-field>
-
-                    <mat-form-field fxFlex>
-                        <mat-label>Tipo de Contato</mat-label>
-                        <mat-select formControlName="tipo" name="tipo" #tipo>
-                            @for (tp of tiposContato; track tp) {
-                            <mat-option [value]="tp">{{tp}}</mat-option>
-                            }
-                        </mat-select>
-                    </mat-form-field>
-
-                    <mat-form-field fxFlex>
-                        <mat-label>Valor</mat-label>
-                        <input matInput formControlName="valor" name="valor" #valor>
-                    </mat-form-field>
-
-                </div>
-
-
-            </div>
-
-
-            <h2>Credenciais</h2>
-
-            <div formGroupName="usuario">
-
-
-                <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="10px" fxLayoutGap.xs="10px">
-
-                    <mat-form-field fxFlex>
-                        <mat-label>Senha</mat-label>
-                        <input matInput type="password" formControlName="senha" name="senha" #senha>
-                    </mat-form-field>
-
-                    <mat-form-field fxFlex>
-                        <mat-label>Confirme sua Senha</mat-label>
-                        <input matInput type="password" formControlName="confirmaSenha" name="confirmaSenha"
-                            #confirmaSenha required>
-                    </mat-form-field>
-
-                    @if(this.formCliente.get('usuario.senha')?.touched &&
-                    this.formCliente.get('usuario.senha')?.value !==
-                    this.formCliente.get('usuario.confirmaSenha')?.value){
-
-                    <div>
-                        <span style="color: red;">Senhas não conferem</span>
-                    </div>
-                    }
-
-                </div>
-
-            </div>
-
-
-            <div formGroupName="endereco">
-
-
-                <h2> Endereço </h2>
-
-                <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="10px" fxLayoutGap.xs="10px">
-
-                    <mat-form-field fxFlex>
-                        <mat-label>Logradouro</mat-label>
-                        <input matInput formControlName="logradouro" name="logradouro" #logradouro>
-                    </mat-form-field>
-
-                    <mat-form-field fxFlex>
-                        <mat-label>Cidade</mat-label>
-                        <input matInput formControlName="cidade" name="cidade" #cidade>
-                    </mat-form-field>
-
-                </div>
-
-                <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="10px" fxLayoutGap.xs="10px">
-
-                    <mat-form-field fxFlex>
-                        <mat-label>Bairro</mat-label>
-                        <input matInput formControlName="bairro" name="bairro" #bairro>
-                    </mat-form-field>
-
-                    <mat-form-field fxFlex>
-                        <mat-label>Complemento</mat-label>
-                        <input color="" matInput formControlName="complemento" name="complemento" #complemento>
-                    </mat-form-field>
-
-                    <mat-form-field fxFlex>
-                        <mat-label>Tag</mat-label>
-                        <input matInput formControlName="tag" name="tag" #tag>
-                    </mat-form-field>
-
-
-                </div>
-
-
-            </div>
-
-
-            <div>
-
-                
-
-                <div class="grid-container">
-
-                    <h1 class="titulo-card">Pets</h1>
-
-                    <span class="espacamento-toolbar"></span>
-
-                    <button mat-icon-button color="primary" aria-label="Adicionar um pet"
-                                    (click)="adicionarPet()" class="action-column-header">
-                                    <mat-icon>add</mat-icon>
-                                </button>
-
-                    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
-
-
-                        <ng-container matColumnDef="nome">
-                            <th mat-header-cell *matHeaderCellDef> Nome do Pet </th>
-                            <td mat-cell *matCellDef="let pet"> {{pet.nome}} </td>
-                        </ng-container>
-
-                        <ng-container matColumnDef="raca">
-                            <th mat-header-cell *matHeaderCellDef> Raça</th>
-                            <td mat-cell *matCellDef="let pet"> {{pet.raca.descricao}} </td>
-                        </ng-container>
-
-                        <ng-container matColumnDef="dataNascimento">
-                            <th mat-header-cell *matHeaderCellDef> Data de Nascimento</th>
-                            <td mat-cell *matCellDef="let pet"> {{pet.dataNascimento}} </td>
-                        </ng-container>
-
-                        <ng-container matColumnDef="actions">
-
-                            <th mat-header-cell *matHeaderCellDef></th>
-
-                            <mat-cell *matCellDef="let pet">
-
-                                <button mat-icon-button color="primary" aria-label="Deletar um pet"
-                                    (click)="removerPet(pet)" class="action-column-header">
-                                    <mat-icon>delete</mat-icon>
-                                </button>
-
-                            </mat-cell>
-                        </ng-container>
-
-
-                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                        <tr mat-row *matRowDef=" let row; columns: displayedColumns;"></tr>
-                    </table>
-
-
-                </div>
-            </div>
-
-
-            <button mat-raised-button
-                [disabled]="!formCliente.valid || formCliente.get('usuario.senha')?.value != formCliente.get('usuario.confirmaSenha')?.value"
-                color="primary" (click)="onSubmit()">
+            <button mat-raised-button [disabled]="!formAtendimento.valid || !this.pet" color="primary"
+                (click)="onSubmit()">
                 Salvar
             </button>
             <button mat-raised-button (click)="voltar()" class="btn-space">

@@ -1,5 +1,5 @@
 <div class="grid-container">
-    <h1 class="mat-h1">Atendimentos</h1>
+    <h1 class="mat-h1">Clientes</h1>
 
     <mat-form-field>
         <mat-label>Filtro</mat-label>
@@ -7,7 +7,7 @@
     </mat-form-field>
 
     <div class="button-container">
-        <button mat-fab class="botao-add" (click)="cadastrarAtendimento()" matTooltip="Adicionar Atendimento">
+        <button mat-fab class="botao-add" (click)="cadastrarCliente()" matTooltip="Adicionar Cliente">
             <mat-icon>add</mat-icon>
         </button>
     </div>
@@ -20,29 +20,35 @@
         <!-- Position Column -->
         <ng-container matColumnDef="nome">
             <th mat-header-cell *matHeaderCellDef mat-sort-header> Nome</th>
-            <td mat-cell *matCellDef="let atendimento"> {{atendimento.pet.nome}} </td>
+            <td mat-cell *matCellDef="let cliente"> {{cliente.nome}} </td>
         </ng-container>
 
         <!-- Name Column -->
-        <ng-container matColumnDef="raca">
-            <th mat-header-cell *matHeaderCellDef> Raça</th>
-            <td mat-cell *matCellDef="let atendimento"> {{atendimento.pet.raca.descricao}} </td>
+        <ng-container matColumnDef="cpf">
+            <th mat-header-cell *matHeaderCellDef> CPF</th>
+            <td mat-cell *matCellDef="let cliente"> {{cliente.cpf}} </td>
         </ng-container>
 
         <!-- Weight Column -->
-        <ng-container matColumnDef="dataAtendimento">
-            <th mat-header-cell *matHeaderCellDef> Data do Atendimento </th>
-            <td mat-cell *matCellDef="let atendimento"> {{this.datePipe.transform(atendimento.data, 'dd/MM/yyyy', 'America/Sao_Paulo')}} </td>
+        <ng-container matColumnDef="email">
+            <th mat-header-cell *matHeaderCellDef> Email </th>
+            <td mat-cell *matCellDef="let cliente"> {{cliente.email}} </td>
         </ng-container>
 
         <!-- Actions Column -->
         <ng-container matColumnDef="actions">
             <th mat-header-cell *matHeaderCellDef></th>
-            <mat-cell *matCellDef="let atendimento">
+            <mat-cell *matCellDef="let cliente">
                 <!-- Botão de detalhamento -->
-                <button mat-icon-button color="primary" aria-label="Detalhar Atendimento"
-                    (click)="onDetalhar(atendimento.id)" class="action-column-header">
+                <button mat-icon-button color="primary" aria-label="Detalhar cliente"
+                    (click)="onDetalhar(cliente.id)" class="action-column-header">
                     <mat-icon>dataset</mat-icon>
+                </button>
+
+                <!-- Botão de exclusão -->
+                <button mat-icon-button color="warn" aria-label="Excluir cliente" (click)="onDelete(cliente.id)"
+                    class="action-column-header">
+                    <mat-icon>delete</mat-icon>
                 </button>
             </mat-cell>
         </ng-container>

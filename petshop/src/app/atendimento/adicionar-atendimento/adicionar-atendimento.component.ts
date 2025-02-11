@@ -1,4 +1,4 @@
-import { CommonModule, Location } from '@angular/common';
+import { CommonModule, DatePipe, Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
@@ -8,23 +8,24 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatDividerModule } from '@angular/material/divider'
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { ClienteService } from '../../service/cliente.service';
+import { AtendimentoService } from '../../service/atendimento.service';
 import { UsuarioService } from '../../service/usuario.service';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Cliente } from '../../model/cliente.model';
-import { ValidateCpf } from '../../validators/validators';
+import { Atendimento } from '../../model/atendimento.model';
 import { MatDialog } from '@angular/material/dialog';
-import { AdicionarPetDialogComponent } from '../../dialogs/adicionar-pet-dialog/adicionar-pet-dialog.component';
 import { MatOptionModule } from '@angular/material/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { Pet } from '../../model/pet.model';
 import { MatCardModule } from '@angular/material/card';
 import { MatTableModule } from '@angular/material/table';
+import { PetService } from '../../service/pet.service';
+import { AdicionarPetAtendimentoDialogComponent } from '../../dialogs/adicionar-pet-atendimento-dialog/adicionar-pet-atendimento-dialog.component';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 
 @Component({
-  selector: 'app-adicionar-cliente',
+  selector: 'app-atendimento-atendimento',
   standalone: true,
   imports: [
     MatButtonModule,
@@ -41,21 +42,24 @@ import { MatTableModule } from '@angular/material/table';
     MatSelectModule,
     MatSnackBarModule,
     MatCardModule,
-    MatTableModule
+    MatTableModule,
+    MatDatepickerModule
   ],
-  templateUrl: './adicionar-cliente.component.html',
-  styleUrl: './adicionar-cliente.component.scss'
+  templateUrl: './adicionar-atendimento.component.html',
+  styleUrl: './adicionar-atendimento.component.scss'
 })
-export class AdicionarClienteComponent implements OnInit {
+export class AdicionarAtendimentoComponent implements OnInit {
 
   constructor(
     private router: Router,
     private location: Location,
-    private clienteService: ClienteService,
-    private snackBar: MatSnackBar,
+    private atendimentoService: AtendimentoService,
     private fb: FormBuilder,
+    public datePipe: DatePipe,
     public usuarioService: UsuarioService,
-    private dialog: MatDialog) {
+    private dialog: MatDialog,
+    private snackBar: MatSnackBar
+    ) {
 
   }
 
@@ -67,146 +71,35 @@ export class AdicionarClienteComponent implements OnInit {
 
   loadingMessage = "Salvando as informações";
   loadingMessages = [
-    "Salvando informações",
-    "Configurando conta"
+    "Salvando informações"
   ];
 
   isLoading = false;
 
-  cliente: Cliente = new Cliente;
 
-  formCliente!: FormGroup;
+  formAtendimento!: FormGroup;
 
-  pets: Pet[] = []
+  pet?: Pet
 
-  tiposContato: string[] = [
-    'Telefone', 'Email'
-  ]
+  atendimento: Atendimento = new Atendimento
 
-  dataSource = [...this.pets];
-
-  displayedColumns: string[] = ['nome', 'raca', 'dataNascimento', 'actions'];
-
-
-
-  voltar() {
-    this.location.back();
-  }
-
-  onSubmit() {
-
-    this.isLoading = true;
-
-    let messageIndex = 0;
-
-    // Alternar mensagens a cada 2 segundos
-    const interval = setInterval(() => {
-      this.loadingMessage = this.loadingMessages[messageIndex];
-      messageIndex = (messageIndex + 1) % this.loadingMessages.length;
-    }, 8000);
-
-    //this.assinante.planoassinantes.push(this.planoassinante);
-    let form = this.formCliente.getRawValue();
-
-    delete form.usuario.confirmaSenha;
-
-    this.cliente = form as Cliente;
-
-    this.cliente.dataCadastro = new Date
-
-    this.cliente.contato.tag = ''
-
-    this.cliente.usuario.cpf = this.cliente.cpf
-
-    this.cliente.usuario.nome = this.cliente.nome
-
-    this.cliente.pets = this.pets
-
-    console.log(this.cliente);
-
-    if (this.cliente.pets.length > 0) {
-
-      for (let pet of this.cliente.pets) {
-
-        pet.cliente = this.cliente
-
-      }
-
-    }
-
-    const clienteSemCiclo = this.removerReferenciaCircular(this.cliente);
-
-    this.clienteService.addCliente(clienteSemCiclo).subscribe(
-
-      dados => {
-
-        this.snackBar.open('Cliente salvo com sucesso!', '', { duration: 3000 });
-        this.isLoading = false;
-
-        this.router.navigate(['admin/home/clientes']);
-
-      },
-      error => {
-
-        this.snackBar.open('Erro ao salvar Cliente', '', { duration: 3000 });
-        console.error(error)
-        this.isLoading = false;
-      },
-    );
-
-    //this.voltar();
-  }
 
 
   createForm() {
 
-    this.formCliente = this.fb.group({
+    this.formAtendimento = this.fb.group({
 
-      nome: [this.cliente.nome,
+      descricaoAtendimento: [this.atendimento.pet.nome,
       [Validators.required, Validators.minLength(10)]],
 
-      cpf: [this.cliente.cpf,
-      [Validators.required, Validators.minLength(11), Validators.maxLength(11), ValidateCpf]],
-
-      contato: this.fb.group({
-
-        tag: [this.cliente.contato.tag,
+      data: [new Date,
         [Validators.required]],
 
-        tipo: [this.cliente.contato.tipo,
+      valor : [this.atendimento.valor,
         [Validators.required]],
 
-        valor: [this.cliente.contato.valor,
-        [Validators.required]],
 
-      }),
-
-      usuario: this.fb.group({
-
-        senha: ['',
-          [Validators.required]],
-
-        confirmaSenha: ['',
-          [Validators.required]]
-      }),
-
-      endereco: this.fb.group({
-
-        logradouro: [this.cliente.endereco.logradouro,
-        [Validators.required]],
-
-        cidade: [this.cliente.endereco.cidade,
-        [Validators.required]],
-
-        bairro: [this.cliente.endereco.bairro,
-        [Validators.required]],
-
-        complemento: [this.cliente.endereco.complemento],
-
-        tag: [this.cliente.endereco.tag,
-        [Validators.required]]
-
-      }),
+      
 
     })
 
@@ -226,7 +119,7 @@ export class AdicionarClienteComponent implements OnInit {
   adicionarPet() {
 
     // Abre a modal e passa o idInstituicao como dado
-    const dialogRef = this.dialog.open(AdicionarPetDialogComponent, {
+    const dialogRef = this.dialog.open(AdicionarPetAtendimentoDialogComponent, {
       width: '400px',
     });
 
@@ -234,34 +127,77 @@ export class AdicionarClienteComponent implements OnInit {
     dialogRef.afterClosed().subscribe(
       pet => {
         if (pet) {
-          this.pets.push(pet);
-          this.dataSource = [...this.pets]; //Criando uma nova referência ao array
+
+          this.pet = pet
 
         }
       });
   }
 
-  removerPet(pet: any) {
-    const index = this.pets.findIndex(p => p === pet);
-    if (index !== -1) {
-      this.pets.splice(index, 1);
+
+  onSubmit(){
+
+
+    this.atendimento = this.formAtendimento.getRawValue() as Atendimento
+
+    this.atendimento.pet = this.pet!
+
+    this.atendimentoService.addAtendimento(this.atendimento).subscribe(
+      response=>{
+
+        this.snackBar.open('Cadastrado com sucesso!', '', {
+          duration: 3000
+        })
+      },
+      error=>{
+        this.snackBar.open('Erro ao Cadastrar!', error.error.error, {
+          duration: 3000
+        })
+      }
+    )
+
+  }
+
+
+  voltar(){
+
+  }
+
+
+
+  onDateBlur() {
+    const control = this.formAtendimento.get('dataAtendimento');
+    if (!control) return;
+
+    let valor = control.value;
+
+    if (!valor) {
+      control.setErrors({ invalidDate: true });
+      return;
     }
 
-    // Atualiza o DataSource para refletir a mudança
-    this.dataSource = [...this.pets];
+    // Converte dd/MM/yyyy para um objeto Date
+    if (typeof valor === 'string' && valor.includes('/')) {
+      const partes = valor.split('/');
+      if (partes.length === 3) {
+        const dia = parseInt(partes[0], 10);
+        const mes = parseInt(partes[1], 10) - 1;
+        const ano = parseInt(partes[2], 10);
+        const data = new Date(ano, mes, dia);
+
+        if (data.getDate() === dia && data.getMonth() === mes && data.getFullYear() === ano) {
+          control.setValue(data);
+          control.setErrors(null);
+        } else {
+          control.setErrors({ invalidDate: true });
+        }
+      } else {
+        control.setErrors({ invalidDate: true });
+      }
+    }
   }
 
 
-  removerReferenciaCircular(cliente: Cliente): any {
-    return {
-      ...cliente,
-      pets: cliente.pets.map(pet => {
-        const petSemCliente = { ...pet }; // Clona o objeto Pet
-        delete petSemCliente.cliente; // Remove a referência circular
-        return petSemCliente;
-      })
-    };
-  }
 
 
 

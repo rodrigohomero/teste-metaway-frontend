@@ -5,7 +5,7 @@ export class Atendimento {
     id?: number;
     pet: Pet = new Pet;
     data: Date = new Date;
-    descricao: string = '';
+    descricaoAtendimento: string = '';
     valor: number = 0;
   }
   
